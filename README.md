@@ -10,7 +10,7 @@ It works with:
 - **a 360° photo that needs fixing**: one that's tilted, the wrong shape, or has black bands where the floor or ceiling is missing.
 
 ## The four steps
-1. **Add your pictures** by choosing files, dragging them in, or pasting screenshots (Ctrl+V, or the **Paste a picture** button). Then say what they are and press **Lay them out**.
+1. **Add your pictures** by choosing files, dragging them in, or pasting screenshots (Ctrl+V, or the **Paste a picture** button). Then say what they are and press **Add** next to each picture to put it in the scene (press it again to take it out).
 2. **Place them roughly.** Drag each picture on the flat map, or use its sliders or the arrow keys. Overlap neighbours a little.
 3. **Patch them together.** Use **Snap together**, **Even out the brightness**, **Blend the joins**, choose how gaps are filled, and **Straighten it**.
 4. **Save.** You get a JPEG twice as wide as it is tall, tagged as a 360° photo, so Google Photos, Facebook and 360° tour makers recognise it.

@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Photosphere Maker</title>
   <meta name="description" content="Make a 360° photo (photosphere) from phone panoramas, ordinary photos, game screenshots or one old photo, or fix a 360° photo that isn't quite right. Free, no sign-in, nothing is uploaded.">
-  <link rel="stylesheet" href="css/style.css?v=20261025e">
+  <link rel="stylesheet" href="css/style.css?v=20261025g">
 </head>
 <body>
 <header class="masthead">
@@ -38,7 +38,7 @@
         <li>Stand in the middle of the room. Press <kbd>F1</kbd> to hide the hotbar and hand. In Options, set <b>FOV</b> to <b>90</b>.</li>
         <li>Face each way exactly with these commands (cheats on), taking a screenshot after each: <code>/tp @s ~ ~ ~ 0 0</code> (front), <code>/tp @s ~ ~ ~ 90 0</code> (right), <code>/tp @s ~ ~ ~ 180 0</code> (back), <code>/tp @s ~ ~ ~ -90 0</code> (left), <code>/tp @s ~ ~ ~ 0 -90</code> (up), <code>/tp @s ~ ~ ~ 0 90</code> (down).</li>
         <li>Screenshot: Windows <kbd>Win</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> · Mac <kbd>Cmd</kbd>+<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd> · Chromebook <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Show windows</kbd>. Paste each one here straight away, in that order.</li>
-        <li>Choose <b>Six views of a cube</b> and press <b>Lay them out</b>.</li>
+        <li>Choose <b>Six views of a cube</b> and press <b>Add</b> next to each picture, in order.</li>
       </ol>
       <p class="help">No cheats? Turn by eye, overlapping each picture with the last by about a third, choose <b>Photos taken while turning on the spot</b>, then place them roughly and <b>Snap together</b>.</p>
     </details>
@@ -54,7 +54,7 @@
     </details>
 
     <fieldset class="layouts" id="layouts" disabled>
-      <legend>What are they?</legend>
+      <legend>What are they? <span class="help-inline">(sets up each picture as you add it)</span></legend>
       <label class="check"><input type="radio" name="layout" value="sphere"> <span>A 360° photo that needs fixing <span class="help-inline">(tilted, wrong shape, gaps)</span></span></label>
       <label class="check"><input type="radio" name="layout" value="strip"> <span>A phone panorama <span class="help-inline">(one long, thin picture)</span></span></label>
       <label class="check"><input type="radio" name="layout" value="cube"> <span>Six views of a cube <span class="help-inline">(Minecraft, games, 3D programs: front, right, back, left, up, down)</span></span></label>
@@ -62,7 +62,6 @@
       <label class="check"><input type="radio" name="layout" value="flat"> <span>One ordinary photo <span class="help-inline">(the rest of the room is filled in around it)</span></span></label>
       <label class="check"><input type="radio" name="layout" value="free"> <span>Something else: I'll place them myself</span></label>
     </fieldset>
-    <button type="button" class="btn" id="lay-out" disabled>Lay them out</button>
     <p class="help" id="layout-help"></p>
   </section>
 
@@ -178,11 +177,25 @@
   <p>Your pictures never leave this computer. Works best in Chrome or Edge on a computer.</p>
 </footer>
 
-<script src="js/geom.js?v=20261025e"></script>
-<script src="js/sphere.js?v=20261025e"></script>
-<script src="js/fill.js?v=20261025e"></script>
-<script src="js/features.js?v=20261025e"></script>
-<script src="js/snap.js?v=20261025e"></script>
-<script src="js/app.js?v=20261025e"></script>
+<script src="js/geom.js?v=20261025g"></script>
+<script src="js/sphere.js?v=20261025g"></script>
+<script src="js/fill.js?v=20261025g"></script>
+<script src="js/features.js?v=20261025g"></script>
+<script src="js/snap.js?v=20261025g"></script>
+<script src="js/app/01-setup.js?v=20261025g"></script>
+<script src="js/app/02-pictures.js?v=20261025g"></script>
+<script src="js/app/03-pasting.js?v=20261025g"></script>
+<script src="js/app/04-layouts.js?v=20261025g"></script>
+<script src="js/app/05-drawing.js?v=20261025g"></script>
+<script src="js/app/06-outlines.js?v=20261025g"></script>
+<script src="js/app/07-map-drag.js?v=20261025g"></script>
+<script src="js/app/08-look-around.js?v=20261025g"></script>
+<script src="js/app/09-keys.js?v=20261025g"></script>
+<script src="js/app/10-piece-controls.js?v=20261025g"></script>
+<script src="js/app/11-patching.js?v=20261025g"></script>
+<script src="js/app/12-undo.js?v=20261025g"></script>
+<script src="js/app/13-saving.js?v=20261025g"></script>
+<script src="js/app/14-samples.js?v=20261025g"></script>
+<script src="js/app/99-start.js?v=20261025g"></script>
 </body>
 </html>

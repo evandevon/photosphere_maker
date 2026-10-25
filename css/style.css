@@ -79,7 +79,7 @@ input[type=color] { width: 36px; height: 26px; padding: 0; border: 1px solid var
   border: 2px dashed var(--line-strong); border-radius: var(--r); background: var(--field); cursor: pointer; }
 .drop.over, .drop:hover { border-color: var(--brass); background: var(--card-hover); }
 .drop-ico { font-size: 1.7rem; }
-.pics { list-style: none; margin: 10px 0 0; padding: 0; display: grid; gap: 6px; }
+.pics { list-style: none; margin: 10px 0 0; padding: 0; display: grid; grid-template-columns: minmax(0, 1fr); gap: 6px; }
 .pics li { display: flex; align-items: center; gap: 8px; }
 .pic { flex: 1; min-width: 0; display: flex; align-items: center; gap: 10px; padding: 6px 8px; text-align: left; border: 1px solid var(--line); border-radius: 6px;
   background: var(--card-2); color: var(--ink); font: inherit; font-size: .88rem; cursor: pointer; }
@@ -89,6 +89,12 @@ input[type=color] { width: 36px; height: 26px; padding: 0; border: 1px solid var
 .swatch-num { display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 5px; border-radius: 11px; color: #111; font: 700 .8rem/1 var(--sans); flex: none; }
 .pic-x { flex: none; width: 36px; height: 36px; border: 1px solid var(--line-strong); border-radius: 6px; background: transparent; color: var(--ink); font-size: 1.1rem; cursor: pointer; }
 .pic-x:hover { border-color: var(--danger); color: var(--danger); }
+.pic-add { flex: none; min-width: 86px; height: 36px; padding: 0 10px; display: inline-flex; align-items: center; justify-content: center; gap: 5px;
+  border: 2px solid var(--brass); border-radius: 6px; background: transparent; color: var(--brass-dark); font: 700 .88rem var(--sans); cursor: pointer; }
+.pic-add:hover { background: var(--card-hover); }
+.pic-add[aria-pressed="true"] { border-color: var(--select); background: var(--select-bg); color: var(--select-text); }
+.pic-add[aria-pressed="true"]:hover { border-color: var(--danger); }
+.pics li.out .pic img { opacity: .5; }
 .samples { display: flex; flex-wrap: wrap; gap: 0 6px; }
 .layouts:disabled { opacity: .5; }
 .sel-name { display: flex; align-items: center; gap: 8px; margin: 0 0 4px; overflow-wrap: anywhere; }
@@ -120,3 +126,4 @@ input[type=color] { width: 36px; height: 26px; padding: 0; border: 1px solid var
 .steps li { margin: 4px 0; }
 .steps b { color: var(--ink); }
 code { font: .85em ui-monospace, Consolas, monospace; padding: 1px 4px; border-radius: 4px; background: var(--field); color: var(--ink); white-space: nowrap; }
+@media (max-width: 420px) { .pics li { gap: 6px; } .pic-add { min-width: 0; padding: 0 8px; } .pic { gap: 6px; padding: 6px; } .pic img { width: 40px; } }
