@@ -1,0 +1,188 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Photosphere Maker</title>
+  <meta name="description" content="Make a 360° photo (photosphere) from phone panoramas, ordinary photos, game screenshots or one old photo, or fix a 360° photo that isn't quite right. Free, no sign-in, nothing is uploaded.">
+  <link rel="stylesheet" href="css/style.css?v=20261025e">
+</head>
+<body>
+<header class="masthead">
+  <div class="wrap">
+    <p class="eyebrow">Free · No sign-in · Nothing is uploaded</p>
+    <h1>Photosphere Maker</h1>
+    <p class="lede">Make a 360° photo from whatever you have: a phone panorama, photos taken while turning on the spot, game screenshots, or one old photograph. Or fix a 360° photo that's tilted, the wrong shape, or missing its floor and ceiling.</p>
+  </div>
+</header>
+
+<main class="wrap ps-grid">
+  <!-- 1. Add pictures -->
+  <section class="panel step" aria-labelledby="h-1">
+    <h2 id="h-1"><span class="num" aria-hidden="true">1</span> Add your pictures</h2>
+    <label class="drop" id="drop" for="files">
+      <input type="file" id="files" accept="image/*" multiple class="vh">
+      <span class="drop-ico" aria-hidden="true">🖼️</span>
+      <span><b>Choose pictures</b> or drag them here</span>
+      <span class="help">JPEG or PNG. They stay on this computer.</span>
+    </label>
+    <div class="paste-row">
+      <button type="button" class="btn small ghost" id="paste" hidden><span aria-hidden="true">📋</span> Paste a picture</button>
+      <p class="help">Or press <kbd>Ctrl</kbd>+<kbd>V</kbd> (Mac: <kbd>Cmd</kbd>+<kbd>V</kbd>) to paste a screenshot. Paste one at a time, in order.</p>
+    </div>
+    <p class="status" id="file-status" role="status" aria-live="polite"></p>
+    <ul class="pics" id="pics" aria-label="Your pictures"></ul>
+    <details class="howto">
+      <summary>Screenshots from Minecraft</summary>
+      <ol class="steps">
+        <li>Stand in the middle of the room. Press <kbd>F1</kbd> to hide the hotbar and hand. In Options, set <b>FOV</b> to <b>90</b>.</li>
+        <li>Face each way exactly with these commands (cheats on), taking a screenshot after each: <code>/tp @s ~ ~ ~ 0 0</code> (front), <code>/tp @s ~ ~ ~ 90 0</code> (right), <code>/tp @s ~ ~ ~ 180 0</code> (back), <code>/tp @s ~ ~ ~ -90 0</code> (left), <code>/tp @s ~ ~ ~ 0 -90</code> (up), <code>/tp @s ~ ~ ~ 0 90</code> (down).</li>
+        <li>Screenshot: Windows <kbd>Win</kbd>+<kbd>Shift</kbd>+<kbd>S</kbd> · Mac <kbd>Cmd</kbd>+<kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd> · Chromebook <kbd>Ctrl</kbd>+<kbd>Shift</kbd>+<kbd>Show windows</kbd>. Paste each one here straight away, in that order.</li>
+        <li>Choose <b>Six views of a cube</b> and press <b>Lay them out</b>.</li>
+      </ol>
+      <p class="help">No cheats? Turn by eye, overlapping each picture with the last by about a third, choose <b>Photos taken while turning on the spot</b>, then place them roughly and <b>Snap together</b>.</p>
+    </details>
+    <details class="howto">
+      <summary>Try a sample</summary>
+      <div class="samples">
+        <button type="button" class="btn small ghost" data-sample="cube">Six Minecraft-style views</button>
+        <button type="button" class="btn small ghost" data-sample="ring">Eight photos, turning on the spot</button>
+        <button type="button" class="btn small ghost" data-sample="strip">A phone panorama</button>
+        <button type="button" class="btn small ghost" data-sample="flat">One old photo</button>
+        <button type="button" class="btn small ghost" data-sample="tilted">A tilted 360° photo</button>
+      </div>
+    </details>
+
+    <fieldset class="layouts" id="layouts" disabled>
+      <legend>What are they?</legend>
+      <label class="check"><input type="radio" name="layout" value="sphere"> <span>A 360° photo that needs fixing <span class="help-inline">(tilted, wrong shape, gaps)</span></span></label>
+      <label class="check"><input type="radio" name="layout" value="strip"> <span>A phone panorama <span class="help-inline">(one long, thin picture)</span></span></label>
+      <label class="check"><input type="radio" name="layout" value="cube"> <span>Six views of a cube <span class="help-inline">(Minecraft, games, 3D programs: front, right, back, left, up, down)</span></span></label>
+      <label class="check"><input type="radio" name="layout" value="ring"> <span>Photos taken while turning on the spot</span></label>
+      <label class="check"><input type="radio" name="layout" value="flat"> <span>One ordinary photo <span class="help-inline">(the rest of the room is filled in around it)</span></span></label>
+      <label class="check"><input type="radio" name="layout" value="free"> <span>Something else: I'll place them myself</span></label>
+    </fieldset>
+    <button type="button" class="btn" id="lay-out" disabled>Lay them out</button>
+    <p class="help" id="layout-help"></p>
+  </section>
+
+  <!-- The view: the whole sphere as a flat map, or looking around -->
+  <section class="panel view-panel" aria-labelledby="h-view">
+    <div class="view-head">
+      <h2 id="h-view">Your photosphere <span class="opt" id="view-hint">Add some pictures to begin.</span></h2>
+      <div class="view-tools">
+        <button type="button" class="btn small ghost" id="undo" disabled title="Undo (Ctrl+Z)"><span aria-hidden="true">↶</span> Undo</button>
+        <button type="button" class="btn small ghost" id="redo" disabled title="Redo (Ctrl+Shift+Z)"><span aria-hidden="true">↷</span> Redo</button>
+        <div class="seg" role="group" aria-label="How to show it">
+          <button type="button" data-view="map" aria-pressed="true">Flat map</button>
+          <button type="button" data-view="look" aria-pressed="false">Look around</button>
+        </div>
+      </div>
+    </div>
+    <div class="stage" id="stage" tabindex="0" role="application" aria-roledescription="photosphere view" aria-label="The photosphere. In the flat map, click a picture to choose it, then drag it, or use the arrow keys. In Look around, drag or use the arrow keys to look.">
+      <canvas id="gl" width="1024" height="512"></canvas>
+      <canvas id="over" width="1024" height="512" aria-hidden="true"></canvas>
+      <p class="stage-empty" id="stage-empty">Your photosphere will appear here.</p>
+    </div>
+    <label class="check view-opts"><input type="checkbox" id="show-outlines" checked> Show the pictures' outlines and the guide lines</label>
+  </section>
+
+  <!-- 2. Place them roughly -->
+  <section class="panel step" aria-labelledby="h-2">
+    <h2 id="h-2"><span class="num" aria-hidden="true">2</span> Place them roughly</h2>
+    <p class="help flush">Drag each picture on the flat map to roughly where it belongs; overlap neighbours a little. It doesn't have to be exact: <b>Snap together</b> (step 3) lines them up.</p>
+    <div id="piece-none" class="help">Choose a picture: click it in the map, or in the list in step 1.</div>
+    <div id="piece-ctl" hidden>
+      <p class="sel-name"><span class="swatch-num" id="sel-num"></span> <b id="sel-name"></b></p>
+      <label for="sel-kind">What kind of picture</label>
+      <select id="sel-kind">
+        <option value="photo">An ordinary photo</option>
+        <option value="strip">A panorama strip</option>
+        <option value="sphere">A 360° photo (or part of one)</option>
+      </select>
+      <div class="sliders">
+        <div><label for="sel-yaw">Left or right <output id="sel-yaw-out"></output></label><input type="range" id="sel-yaw" min="-180" max="180" step="0.5"></div>
+        <div><label for="sel-pitch">Up or down <output id="sel-pitch-out"></output></label><input type="range" id="sel-pitch" min="-90" max="90" step="0.5"></div>
+        <div><label for="sel-roll">Tilt <output id="sel-roll-out"></output></label><input type="range" id="sel-roll" min="-180" max="180" step="0.5"></div>
+        <div><label for="sel-size">Size <output id="sel-size-out"></output></label><input type="range" id="sel-size" min="10" max="360" step="0.5"></div>
+        <div><label for="sel-gain">Brightness <output id="sel-gain-out"></output></label><input type="range" id="sel-gain" min="50" max="200" step="1"></div>
+      </div>
+      <label class="check"><input type="checkbox" id="same-lens"> <span>Resize all the photos together <span class="help-inline">(they were taken with the same camera)</span></span></label>
+      <details class="howto">
+        <summary>Trim the edges</summary>
+        <div class="sliders">
+          <div><label for="crop-l">Left <output id="crop-l-out"></output></label><input type="range" id="crop-l" min="0" max="45" step="0.5"></div>
+          <div><label for="crop-r">Right <output id="crop-r-out"></output></label><input type="range" id="crop-r" min="0" max="45" step="0.5"></div>
+          <div><label for="crop-t">Top <output id="crop-t-out"></output></label><input type="range" id="crop-t" min="0" max="45" step="0.5"></div>
+          <div><label for="crop-b">Bottom <output id="crop-b-out"></output></label><input type="range" id="crop-b" min="0" max="45" step="0.5"></div>
+        </div>
+        <p class="help">Trim off black borders, a watermark, or a game's on-screen display.</p>
+      </details>
+      <div class="row">
+        <label class="check"><input type="checkbox" id="sel-hide"> Leave this picture out</label>
+        <button type="button" class="btn small ghost" id="sel-front">Bring to the front</button>
+      </div>
+      <p class="help">Keys (with the picture view selected): arrows move it (Shift: further), <kbd>+</kbd> <kbd>−</kbd> resize, <kbd>[</kbd> <kbd>]</kbd> tilt, <kbd>Tab</kbd> next picture.</p>
+    </div>
+  </section>
+
+  <!-- 3. Patch together -->
+  <section class="panel step" aria-labelledby="h-3">
+    <h2 id="h-3"><span class="num" aria-hidden="true">3</span> Patch them together</h2>
+    <button type="button" class="btn" id="snap" disabled>Snap together</button>
+    <button type="button" class="btn ghost" id="snap-cancel" hidden>Stop</button>
+    <div class="progress" id="snap-progress" hidden><div></div></div>
+    <p class="status" id="snap-status" role="status" aria-live="polite"></p>
+    <button type="button" class="btn small ghost" id="match" disabled>Even out the brightness</button>
+
+    <label for="feather">Blend the joins <output id="feather-out"></output></label>
+    <input type="range" id="feather" min="1" max="45" step="1" value="12" aria-describedby="feather-help">
+    <p class="help" id="feather-help">How far each picture fades into the next. More hides joins; less keeps detail sharp.</p>
+
+    <fieldset class="fills">
+      <legend>Gaps no picture reaches</legend>
+      <label class="check"><input type="radio" name="fill" value="1" checked> <span>Fill smoothly <span class="help-inline">— colour flows in from the edges</span></span></label>
+      <label class="check"><input type="radio" name="fill" value="2"> <span>One colour <input type="color" id="fill-colour" value="#2a2523" aria-label="Fill colour"></span></label>
+      <label class="check"><input type="radio" name="fill" value="0"> <span>Leave black</span></label>
+    </fieldset>
+
+    <h3 class="sub">Straighten it</h3>
+    <div class="sliders">
+      <div><label for="g-yaw">Which way is the front <output id="g-yaw-out"></output></label><input type="range" id="g-yaw" min="-180" max="180" step="0.5" value="0"></div>
+      <div><label for="g-pitch">Tip forward or back <output id="g-pitch-out"></output></label><input type="range" id="g-pitch" min="-45" max="45" step="0.25" value="0"></div>
+      <div><label for="g-roll">Level the horizon <output id="g-roll-out"></output></label><input type="range" id="g-roll" min="-45" max="45" step="0.25" value="0"></div>
+    </div>
+    <p class="help">The red line on the flat map is the horizon: walls and door frames should look upright in <b>Look around</b>.</p>
+  </section>
+
+  <!-- 4. Save -->
+  <section class="panel step" aria-labelledby="h-4">
+    <h2 id="h-4"><span class="num" aria-hidden="true">4</span> Save your photosphere</h2>
+    <label for="out-size">Size</label>
+    <select id="out-size">
+      <option value="2880">Quick to load: 2880 × 1440 (works on every phone)</option>
+      <option value="4096" selected>Sharp: 4096 × 2048 (most phones)</option>
+      <option value="8192">Very sharp: 8192 × 4096 (big file; computers only)</option>
+    </select>
+    <label for="out-name">File name</label>
+    <input type="text" id="out-name" value="photosphere" maxlength="60">
+    <button type="button" class="btn" id="save" disabled>Make the photosphere</button>
+    <div class="progress" id="save-progress" hidden><div></div></div>
+    <p class="status" id="save-status" role="status" aria-live="polite"></p>
+    <a class="btn" id="download" hidden download>⬇ Download</a>
+    <p class="help">It's a JPEG twice as wide as it is tall, the shape every 360° viewer expects (Google Street View, Facebook, ThingLink, 360° tour makers).</p>
+  </section>
+</main>
+
+<footer class="wrap foot">
+  <p>Your pictures never leave this computer. Works best in Chrome or Edge on a computer.</p>
+</footer>
+
+<script src="js/geom.js?v=20261025e"></script>
+<script src="js/sphere.js?v=20261025e"></script>
+<script src="js/fill.js?v=20261025e"></script>
+<script src="js/features.js?v=20261025e"></script>
+<script src="js/snap.js?v=20261025e"></script>
+<script src="js/app.js?v=20261025e"></script>
+</body>
+</html>
